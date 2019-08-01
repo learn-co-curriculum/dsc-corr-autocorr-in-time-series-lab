@@ -106,7 +106,14 @@ xr.corr()
 
 ### What is your conclusion here? You might want to use outside resources to understand what's going on.
 
-The exchange rates for Euro and the Australian dollar are highly correlated, but there are differences. The Euro and the Danish Krone, however, is *perfectly* correlated. If you do further research you'll notice that the Danish Krone is *pegged* to the Euro, which means that they are basically designed to perfectly correlate together! The fact that the value is just veryvery close to 1 is due to rounding errors.
+
+```python
+# The exchange rates for Euro and the Australian dollar are highly correlated, 
+# but there are differences. The Euro and the Danish Krone, however, is perfectly correlated. 
+# If you do further research you'll notice that the Danish Krone is pegged to the Euro, 
+# which means that they are basically designed to perfectly correlate together! 
+# The fact that the value is just very, very close to 1 is due to rounding errors.
+```
 
 Next, look at the plots of the differenced series. Use subplots to plot them rather than creating just one plot.
 
@@ -182,7 +189,16 @@ xr_diff.corr()
 
 ### Explain what's going on
 
-Differencing the series here led to a decrease in correlation between the EUR/USD and AUD/USD series. If you think a little further, this makes sense: in the lecture before, the high correlation was a result of seasonality. Differencing led to an increase in correlation between series, here the series are moving in the (more or less) same direction on a day-to-day basis and seasonality is not present, hence this result. 
+
+```python
+# Differencing the series here led to a decrease 
+# in correlation between the EUR/USD and AUD/USD series. 
+# If you think a little further, this makes sense: in the lecture before, 
+# the high correlation was a result of seasonality. 
+# Differencing led to an increase in correlation between series, 
+# here the series are moving in the (more or less) same direction 
+# on a day-to-day basis and seasonality is not present, hence this result.
+```
 
 Next, let's look at the "lag 1 autocorrelation" for the EUR/USD exchange rate. Create a "lag 1 autocorrelation" series, plot the result, and look at the correlation coefficient.
 
@@ -315,7 +331,12 @@ lag_50.corr()
 
 ### What's your conclusion here?
 
-Autocorrelation is very high in these time series, even up to a lag as big as 50! This is no big surprise though: remember that these are random walk series, which are highly recursive, as each value depends heavily on the previous one!
+
+```python
+# Autocorrelation is very high in these time series, even up to a lag as big as 50! 
+# This is no big surprise though: remember that these are random walk series, 
+# which are highly recursive, as each value depends heavily on the previous one!
+```
 
 Knowing this, let's plot the ACF now.
 
@@ -340,7 +361,7 @@ from matplotlib.pylab import rcParams
 
 rcParams['figure.figsize'] = 14, 5
 
-plot_pacf(eur.dropna(), lags = 100);
+plot_pacf(eur.dropna(), lags = 100, method='ywm');
 ```
 
 
@@ -368,7 +389,7 @@ air.plot()
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x11f083080>
+    <matplotlib.axes._subplots.AxesSubplot at 0x11aea9f28>
 
 
 
@@ -391,7 +412,7 @@ pd.plotting.autocorrelation_plot(air);
 from statsmodels.graphics.tsaplots import plot_pacf
 from matplotlib.pylab import rcParams
 rcParams['figure.figsize'] = 14, 5
-plot_pacf(air.dropna(), lags = 100);
+plot_pacf(air.dropna(), lags = 100, method='ywm');
 ```
 
 
@@ -420,7 +441,7 @@ from matplotlib.pylab import rcParams
 
 rcParams['figure.figsize'] = 14, 5
 
-plot_pacf(air_diff.dropna(), lags = 100);
+plot_pacf(air_diff.dropna(), lags = 100, method='ywm');
 ```
 
 
@@ -429,11 +450,16 @@ plot_pacf(air_diff.dropna(), lags = 100);
 
 ### Your conclusion here
 
-The result reminds us a lot of the google trends data. the seasonality is much more clear in the differenced time series. The PACF has just one very strong correlation, right at 12 months.
+
+```python
+# The result reminds us a lot of the google trends data. 
+# The seasonality is much more clear in the differenced time series. 
+# The PACF has just one very strong correlation, right at 12 months.
+```
 
 ## The NYSE data
 
-Look at correlation and autocorrelation functions for the NYSE data.
+Look at correlation and autocorrelation functions for the NYSE data ("NYSE_monthly.csv")
 
 
 ```python
@@ -516,7 +542,7 @@ from matplotlib.pylab import rcParams
 
 rcParams['figure.figsize'] = 14, 5
 
-plot_pacf(data, lags = 100);
+plot_pacf(data, lags = 100, method='ywm');
 ```
 
 
@@ -525,7 +551,13 @@ plot_pacf(data, lags = 100);
 
 ## Your conclusion here
 
-Autocorrelations and partial autocorrelations are virtually 0 for any lag. This is no surprise! The NYSE series was a white noise series, meaning there is no trend or no seasonality! This is, again, a typical result for these kind of series.
+
+```python
+# Autocorrelations and partial autocorrelations are virtually 0 for any lag. 
+# This is no surprise! The NYSE series was a white noise series, meaning there is no trend or no seasonality! 
+# This is, again, a typical result for these kind of series.
+
+```
 
 
 
