@@ -79,7 +79,7 @@ Next, let's look at the "lag 1 autocorrelation" for the EUR/USD exchange rate. C
 # your code here
 ```
 
-Repeat this, but for a "lag 5 autocorrelation"
+Repeat this, but for a "lag 50 autocorrelation"
 
 
 ```python
