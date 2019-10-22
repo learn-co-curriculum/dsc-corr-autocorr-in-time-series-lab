@@ -329,7 +329,7 @@ lag_1.corr()
 
 
 
-Repeat this, but for a "lag 5 autocorrelation"
+Repeat this, but for a "lag 50 autocorrelation"
 
 
 ```python
