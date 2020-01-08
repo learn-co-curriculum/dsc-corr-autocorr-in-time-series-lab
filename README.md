@@ -3,59 +3,84 @@
 
 ## Introduction
 
-In this lab, You'll practice your knowledge on correlation, autocorrelation and the ACF and PACF.
+In this lab, you'll practice your knowledge of correlation, autocorrelation, and partial autocorrelation by working on three different datasets. 
 
 ## Objectives
 
-You will be able to:
-- Understand correlation in Time Series
-- Plot and discuss the autocorrelation function (ACF) for a time-series 
-- Plot and discuss the partial autocorrelation function (PACF) for a time-series 
-- Interpret ACF and PACF and Identify use cases both functions
+In this lab you will: 
+
+- Plot and discuss the autocorrelation function (ACF) for a time series 
+- Plot and discuss the partial autocorrelation function (PACF) for a time series 
 
 ## The Exchange Rate Data
 
-We'll be looking at the exchange rates dataset again. First, import the necessary libraries for time series and plotting. Then import the data (in `exch_rates.csv`) and make sure it's set in the correct time series format with the `datetime` as the index.
+We'll be looking at the exchange rates dataset again. 
+
+- First, run the following cell to import all the libraries and the functions required for this lab 
+- Then import the data in `'exch_rates.csv'` 
+- Change the data type of the `'Frequency'` column 
+- Set the `'Frequency'` column as the index of the DataFrame 
 
 
 ```python
-# your code here
-```
-
-
-```python
-# __SOLUTION__ 
+# Import all packages and functions
 import pandas as pd
-from pandas import Series
 import numpy as np
 import matplotlib.pylab as plt
 %matplotlib inline
-```
-
-
-```python
-# your code here
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+from matplotlib.pylab import rcParams
 ```
 
 
 ```python
 # __SOLUTION__ 
-xr = pd.read_csv("exch_rates.csv")
+# Import all packages and functions
+import pandas as pd
+import numpy as np
+import matplotlib.pylab as plt
+%matplotlib inline
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+from matplotlib.pylab import rcParams
+```
 
+
+```python
+# Import data
+xr = None
+
+# Change the data type of the 'Frequency' column 
+
+
+# Set the 'Frequency' column as the index
+
+```
+
+
+```python
+# __SOLUTION__ 
+# Import data
+xr = pd.read_csv('exch_rates.csv')
+
+# Change the data type of the 'Frequency' column 
 xr['Frequency'] = pd.to_datetime(xr['Frequency'])
+
+# Set the 'Frequency' column as the index
 xr.set_index('Frequency', inplace=True)
 ```
 
-Plot the three exchange rates in one plot
+Plot all three exchange rates in one graph: 
 
 
 ```python
-# your code here
+# Plot here
+
 ```
 
 
 ```python
 # __SOLUTION__ 
+# Plot here
 xr.plot(figsize=(18,6))
 plt.xlabel('Year', fontsize=14);
 ```
@@ -64,16 +89,17 @@ plt.xlabel('Year', fontsize=14);
 ![png](index_files/index_11_0.png)
 
 
-You can see that the EUR/USD and AUD/USD exchange rate are somewhere between rougly 0.5 and 2 between 2000 and 2018, where the Danish Krone is somewhere between roughly 4.5 and 9. Now let's look at the correlations between these time series.
+You can see that the EUR/USD and AUD/USD exchange rates are somewhere between 0.5 and 2, whereas the Danish Krone is somewhere between 4.5 and 9. Now let's look at the correlations between these time series. 
 
 
 ```python
-# your code here
+# Correlation
 ```
 
 
 ```python
 # __SOLUTION__ 
+# Correlation
 xr.corr()
 ```
 
@@ -132,50 +158,65 @@ xr.corr()
 
 
 ```python
+
+```
+
+
+```python
 # __SOLUTION__
 # The exchange rates for Euro and the Australian dollar are highly correlated, 
 # but there are differences. The Euro and the Danish Krone, however, is perfectly correlated. 
 # If you do further research you'll notice that the Danish Krone is pegged to the Euro, 
 # which means that they are basically designed to perfectly correlate together! 
-# The fact that the value is just very, very close to 1 is due to rounding errors.
+# The fact that the value is just very, very close to 1 is due to rounding errors. 
+# Usually when the correlation is so close to 1 (or -1), it's too good to be true. 
+# So make sure you always dig deeper to correctly understand and interpret these numbers.  
 ```
 
-Next, look at the plots of the differenced series. Use subplots to plot them rather than creating just one plot.
+Next, look at the plots of the differenced (1-lag) series. Use subplots to plot them rather than creating just one plot. 
 
 
 ```python
-# your code here
+# 1-lag differenced series 
+xr_diff = None
 ```
 
 
 ```python
 # __SOLUTION__ 
+# 1-lag differenced series 
 xr_diff = xr.diff(periods=1)
 ```
 
 
 ```python
-# your code here
+# Plot
+
 ```
 
 
 ```python
 # __SOLUTION__ 
-xr_diff.plot(figsize = (13,8), subplots=True, legend=True);
+# Plot
+xr_diff.plot(figsize=(13,8), subplots=True, legend=True);
 ```
 
 
-![png](index_files/index_21_0.png)
+![png](index_files/index_22_0.png)
 
+
+Calculate the correlation of this differenced time series. 
 
 
 ```python
-# your code here
+# Correlation 
+
 ```
 
 
 ```python
 # __SOLUTION__ 
+# Correlation 
 xr_diff.corr()
 ```
 
@@ -234,56 +275,79 @@ xr_diff.corr()
 
 
 ```python
+
+```
+
+
+```python
 # __SOLUTION__
 # Differencing the series here led to a decrease 
 # in correlation between the EUR/USD and AUD/USD series. 
-# If you think a little further, this makes sense: in the lecture before, 
+# If you think a little further, this makes sense: in the previous lesson, 
 # the high correlation was a result of seasonality. 
 # Differencing led to an increase in correlation between series, 
-# here the series are moving in the (more or less) same direction 
+# here the series are moving in (more or less) the same direction 
 # on a day-to-day basis and seasonality is not present, hence this result.
 ```
 
-Next, let's look at the "lag 1 autocorrelation" for the EUR/USD exchange rate. Create a "lag 1 autocorrelation" series, plot the result, and look at the correlation coefficient.
+Next, let's look at the "lag-1 autocorrelation" for the EUR/USD exchange rate. 
+
+- Create a "lag-1 autocorrelation" series 
+- Combine both the original and the shifted ("lag-1 autocorrelation") series into a DataFrame 
+- Plot these time series, and look at the correlation coefficient 
 
 
 ```python
-# your code here
-```
-
-
-```python
-# __SOLUTION__ 
+# Isolate the EUR/USD exchange rate
 eur = xr[['Euro']]
-```
 
-
-```python
-# your code here
+# "Shift" the time series by one period
+eur_shift_1 = None
 ```
 
 
 ```python
 # __SOLUTION__ 
-eur_shift_1 = eur.shift(periods=1)
-eur_shift_1.head()
+# Isolate the EUR/USD exchange rate
+eur = xr[['Euro']]
 
-lag_1= pd.concat([eur_shift_1, eur], axis=1)
+# "Shift" the time series by one period
+eur_shift_1 = eur.shift(periods=1)
+```
+
+
+```python
+# Combine the original and shifted time series
+lag_1 = None
+
+# Plot 
+
+```
+
+
+```python
+# __SOLUTION__ 
+# Combine the original and shifted time series
+lag_1 = pd.concat([eur_shift_1, eur], axis=1)
+
+# Plot
 lag_1.plot(figsize=(18,6), alpha=0.5);
 ```
 
 
-![png](index_files/index_30_0.png)
+![png](index_files/index_33_0.png)
 
 
 
 ```python
-# your code here
+# Correlation
+
 ```
 
 
 ```python
 # __SOLUTION__ 
+# Correlation
 lag_1.corr()
 ```
 
@@ -329,35 +393,47 @@ lag_1.corr()
 
 
 
-Repeat this, but for a "lag 50 autocorrelation"
+Repeat this for a "lag-50 autocorrelation". 
 
 
 ```python
-# your code here
+# "Shift" the time series by 50 periods
+eur_shift_50 = None
+
+# Combine the original and shifted time series
+lag_50 = None
+
+# Plot
+
 ```
 
 
 ```python
 # __SOLUTION__ 
+# "Shift" the time series by 50 periods
 eur_shift_50 = eur.shift(periods=50)
-eur_shift_50.head()
 
-lag_50= pd.concat([eur_shift_50, eur], axis=1)
+# Combine the original and shifted time series
+lag_50 = pd.concat([eur_shift_50, eur], axis=1)
+
+# Plot
 lag_50.plot(figsize=(18,6), alpha=0.8);
 ```
 
 
-![png](index_files/index_35_0.png)
+![png](index_files/index_38_0.png)
 
 
 
 ```python
-# your code here
+# Correlation
+
 ```
 
 
 ```python
 # __SOLUTION__ 
+# Correlation
 lag_50.corr()
 ```
 
@@ -407,6 +483,11 @@ lag_50.corr()
 
 
 ```python
+
+```
+
+
+```python
 # __SOLUTION__
 # Autocorrelation is very high in these time series, even up to a lag as big as 50! 
 # This is no big surprise though: remember that these are random walk series, 
@@ -417,113 +498,138 @@ Knowing this, let's plot the ACF now.
 
 
 ```python
-# your code here
+# Plot ACF
+
 ```
 
 
 ```python
 # __SOLUTION__ 
+# Plot ACF
 plt.figure(figsize=(12,5))
 pd.plotting.autocorrelation_plot(eur.dropna());
-```
-
-
-![png](index_files/index_42_0.png)
-
-
-The series is heavily autocorrelated at first, and then there is a decay. This is a typical result for a series that is a random walk, generally you'll see heavy autocorrelations first, slowly tailing off until there is no autocorrelation anymore.
-
-Next, let's look at the Partial Autocorrelation Function.
-
-
-```python
-# your code here
-```
-
-
-```python
-# __SOLUTION__ 
-from statsmodels.graphics.tsaplots import plot_pacf
-from matplotlib.pylab import rcParams
-
-rcParams['figure.figsize'] = 14, 5
-
-plot_pacf(eur.dropna(), lags = 100, method='ywm');
 ```
 
 
 ![png](index_files/index_46_0.png)
 
 
-This is interesting! Remember that *Partial Autocorrelation Function* gives the partial correlation of a time series with its own lagged values, controlling for the values of the time series at all shorter lags. When controlling for 1 period lags, the PACF is only very high for one-period lags, and basically 0 for shorter lags. This is again a typical result for Random Walk series!
+The series is heavily autocorrelated at first, and then there is a decay. This is a typical result for a series that is a random walk, generally you'll see heavy autocorrelations first, slowly tailing off until there is no autocorrelation anymore.
+
+Next, let's look at the partial autocorrelation function plot.
+
+
+```python
+# Plot PACF
+
+```
+
+
+```python
+# __SOLUTION__ 
+# Plot PACF
+rcParams['figure.figsize'] = 14, 5
+plot_pacf(eur.dropna(), lags=100);
+```
+
+
+![png](index_files/index_50_0.png)
+
+
+This is interesting! Remember that *Partial Autocorrelation Function* gives the partial correlation of a time series with its own lagged values, controlling for the values of the time series at all shorter lags. When controlling for 1 period, the PACF is only very high for one-period lags, and basically 0 for shorter lags. This is again a typical result for random walk series!
 
 ## The Airpassenger Data
 
-Look at ACF and PACF for the airpassenger data and describe the result `passengers.csv`. Do this both for the differenced and regular series.
+Let's work with the air passenger dataset you have seen before. Plot the ACF and PACF for both the differenced and regular series. 
+
+> Note: When plotting the PACF, make sure you specify `method='ywm'` in order to avoid any warnings. 
 
 
 ```python
-# your code here
+# Import and process the air passenger data
+air = pd.read_csv('passengers.csv')
+air['Month'] = pd.to_datetime(air['Month'])
+air.set_index('Month', inplace=True)
+air.head()
 ```
 
 
 ```python
 # __SOLUTION__ 
-air= pd.read_csv('passengers.csv')
-air.Month = pd.to_datetime(air.Month)
-air.set_index('Month', inplace = True)
+# Import and process the air passenger data
+air = pd.read_csv('passengers.csv')
+air['Month'] = pd.to_datetime(air['Month'])
+air.set_index('Month', inplace=True)
+air.head()
 ```
 
 
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>#Passengers</th>
+    </tr>
+    <tr>
+      <th>Month</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1949-01-01</th>
+      <td>112</td>
+    </tr>
+    <tr>
+      <th>1949-02-01</th>
+      <td>118</td>
+    </tr>
+    <tr>
+      <th>1949-03-01</th>
+      <td>132</td>
+    </tr>
+    <tr>
+      <th>1949-04-01</th>
+      <td>129</td>
+    </tr>
+    <tr>
+      <th>1949-05-01</th>
+      <td>121</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
 ```python
-# your code here
+# Plot ACF (regular)
+
 ```
 
 
 ```python
 # __SOLUTION__ 
-air.plot()
-```
-
-
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x11aea9f28>
-
-
-
-
-![png](index_files/index_53_1.png)
-
-
-
-```python
-# your code here
-```
-
-
-```python
-# __SOLUTION__ 
+# Plot ACF (regular)
 plt.figure(figsize=(12,5))
 pd.plotting.autocorrelation_plot(air);
-```
-
-
-![png](index_files/index_55_0.png)
-
-
-
-```python
-# your code here
-```
-
-
-```python
-# __SOLUTION__ 
-from statsmodels.graphics.tsaplots import plot_pacf
-from matplotlib.pylab import rcParams
-rcParams['figure.figsize'] = 14, 5
-plot_pacf(air.dropna(), lags = 100, method='ywm');
 ```
 
 
@@ -532,52 +638,78 @@ plot_pacf(air.dropna(), lags = 100, method='ywm');
 
 
 ```python
-# your code here
+# Plot PACF (regular)
+
 ```
 
 
 ```python
 # __SOLUTION__ 
+# Plot PACF (regular)
+rcParams['figure.figsize'] = 14, 5
+plot_pacf(air.dropna(), lags=100, method='ywm');
+```
+
+
+![png](index_files/index_59_0.png)
+
+
+
+```python
+# Generate a differenced series
+air_diff = None
+```
+
+
+```python
+# __SOLUTION__ 
+# Generate a differenced series
 air_diff = air.diff(periods=1)
 ```
 
 
 ```python
-# your code here
+# Plot ACF (differenced)
+
+
 ```
 
 
 ```python
 # __SOLUTION__ 
+# Plot ACF (differenced)
 plt.figure(figsize=(12,5))
 pd.plotting.autocorrelation_plot(air_diff.dropna());
-```
-
-
-![png](index_files/index_61_0.png)
-
-
-
-```python
-# your code here
-```
-
-
-```python
-# __SOLUTION__ 
-from statsmodels.graphics.tsaplots import plot_pacf
-from matplotlib.pylab import rcParams
-
-rcParams['figure.figsize'] = 14, 5
-
-plot_pacf(air_diff.dropna(), lags = 100, method='ywm');
 ```
 
 
 ![png](index_files/index_63_0.png)
 
 
+
+```python
+# Plot PACF (differenced)
+
+```
+
+
+```python
+# __SOLUTION__ 
+# Plot PACF (differenced)
+rcParams['figure.figsize'] = 14, 5
+plot_pacf(air_diff.dropna(), lags=100, method='ywm');
+```
+
+
+![png](index_files/index_65_0.png)
+
+
 ### Your conclusion here
+
+
+```python
+
+```
 
 
 ```python
@@ -589,21 +721,27 @@ plot_pacf(air_diff.dropna(), lags = 100, method='ywm');
 
 ## The NYSE data
 
-Look at correlation and autocorrelation functions for the NYSE data ("NYSE_monthly.csv")
+Are you getting the hang of interpreting ACF and PACF plots? For one final time, plot the ACF and PACF for both the NYSE time series. 
+
+> Note: When plotting the PACF, make sure you specify `method='ywm'` in order to avoid any warnings. 
 
 
 ```python
-# your code here
+# Import and process the NYSE data
+nyse = pd.read_csv('NYSE_monthly.csv') 
+nyse['Month'] = pd.to_datetime(nyse['Month'])
+nyse.set_index('Month', inplace=True)
+nyse.head()
 ```
 
 
 ```python
 # __SOLUTION__ 
-data = pd.read_csv("NYSE_monthly.csv")
-col_name= 'Month'
-data[col_name] = pd.to_datetime(data[col_name])
-data.set_index(col_name, inplace=True)
-data.head()
+# Import and process the NYSE data
+nyse = pd.read_csv('NYSE_monthly.csv') 
+nyse['Month'] = pd.to_datetime(nyse['Month'])
+nyse.set_index('Month', inplace=True)
+nyse.head()
 ```
 
 
@@ -663,41 +801,42 @@ data.head()
 
 
 ```python
-# your code here
+# Plot ACF
 ```
 
 
 ```python
 # __SOLUTION__ 
 plt.figure(figsize=(12,5))
-pd.plotting.autocorrelation_plot(data.dropna());
+pd.plotting.autocorrelation_plot(nyse.dropna());
 ```
 
 
-![png](index_files/index_71_0.png)
+![png](index_files/index_74_0.png)
 
 
 
 ```python
-# your code here
+# Plot PACF
 ```
 
 
 ```python
 # __SOLUTION__ 
-from statsmodels.graphics.tsaplots import plot_pacf
-from matplotlib.pylab import rcParams
-
 rcParams['figure.figsize'] = 14, 5
-
-plot_pacf(data, lags = 100, method='ywm');
+plot_pacf(nyse, lags=100, method='ywm');
 ```
 
 
-![png](index_files/index_73_0.png)
+![png](index_files/index_76_0.png)
 
 
 ## Your conclusion here
+
+
+```python
+
+```
 
 
 ```python
@@ -712,4 +851,4 @@ plot_pacf(data, lags = 100, method='ywm');
 
 ## Summary
 
-Great, you've now been introduced to correlation, the ACF and PACF. Let's move into more serious modeling with autoregressive and moving average models!
+Great, you've now been introduced to ACF and PACF. Let's move into more serious modeling with autoregressive and moving average models!
