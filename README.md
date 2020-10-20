@@ -391,7 +391,7 @@ Next, let's look at the partial autocorrelation function plot.
 ```python
 # Plot PACF
 rcParams['figure.figsize'] = 14, 5
-plot_pacf(eur.dropna(), lags=100);
+plot_pacf(eur.dropna(), lags=50);
 ```
 
 
@@ -485,7 +485,7 @@ pd.plotting.autocorrelation_plot(air);
 ```python
 # Plot PACF (regular)
 rcParams['figure.figsize'] = 14, 5
-plot_pacf(air.dropna(), lags=100, method='ywm');
+plot_pacf(air.dropna(), lags=50, method='ywm');
 ```
 
 
@@ -513,7 +513,7 @@ pd.plotting.autocorrelation_plot(air_diff.dropna());
 ```python
 # Plot PACF (differenced)
 rcParams['figure.figsize'] = 14, 5
-plot_pacf(air_diff.dropna(), lags=100, method='ywm');
+plot_pacf(air_diff.dropna(), lags=50, method='ywm');
 ```
 
 
@@ -612,7 +612,7 @@ pd.plotting.autocorrelation_plot(nyse.dropna());
 
 ```python
 rcParams['figure.figsize'] = 14, 5
-plot_pacf(nyse, lags=100, method='ywm');
+plot_pacf(nyse, lags=30, method='ywm');
 ```
 
 
